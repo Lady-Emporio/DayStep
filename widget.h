@@ -17,6 +17,7 @@ class Widget : public QWidget
     Q_OBJECT
     void makeGui();
 public:
+    explicit Widget(QWidget *parent = 0);
     QLabel * typeRoundLabel;
     QLabel * production;
     QLabel * firstLabel;
@@ -25,31 +26,29 @@ public:
     QLabel * inputLabel;
     int first;
     int second;
-    bool isPlay;
-    void setValues();
-    void inputValue(int key);
-    int keyToRealValue(int key);
-    explicit Widget(QWidget *parent = 0);
-    void roundLowSum();//2:9 + 2:9
-    void roundMiddleSum();//2:99 + 2:99
-    void roundTableMultiplication(); //2:9 * 2:9
-    void roundBigMultiplication();//11:19 * 2*10
-    //void roundModulo();//10:99 % 2:9
-    //void roundLowDivision();//10:99 / 2:9
-    //void roundMiddleSubtraction(); //10:99 - 10:99
-    void nextRound();
-    void soundValues();
-    void soundError(int type);
+    bool isPlay; //если Ложь не играть музыку кроме ошибок.
+    QMenuBar * mainMenu; //для визуализации isPlay. Если крсное тогда isPlay=Истина и звучит нажатие
     QMediaPlayer *player;
     QMediaPlaylist *playlist;
-    QMenuBar * mainMenu;
+    void setValues();//запихивает в label first and second, чисто для уменьшения кода
+    void inputValue(int key);// обработка ввода, преобразованного в значение из keyToRealValue.
+    int keyToRealValue(int key);//преобразовывает код клавиатуры в значение.
+    void soundError(int type);//для уменьшения кода. в зависимости от типа ( неправильный ответ, ввод не числа) играет определенная музыка
+    void soundValues();//Если isPlay, то озвучит условие
+    int getValue(int min,int max);
+    void fillAll(int f_min,int f_max,int s_min,int s_max,QString state,QString nameRound);
+
+    void roundLowSum();
+    void roundMiddleSum();
+    void roundTableMultiplication();
+    void roundBigMultiplication();
+    void roundModulo();
+    void roundLowDivision();
+    void roundMiddleSubtraction();
+    void roundBigSum();
 public slots:
-    void action_roundBigSum();//101:199 + 101:199;
-    void action_roundLowSum();
-    void action_roundTableMultiplication();
-    void action_roundMiddleSum();
-    void action_roundBigMultiplication();
     void action_isPlay();
+    void nextRound(); // запускается каждый раз при вводе правильного ответа.
 };
 struct staticVariable{
     Widget *w;
