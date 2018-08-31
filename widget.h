@@ -35,6 +35,7 @@ public:
     int keyToRealValue(int key);//преобразовывает код клавиатуры в значение.
     void soundError(int type);//для уменьшения кода. в зависимости от типа ( неправильный ответ, ввод не числа) играет определенная музыка
     void soundValues();//Если isPlay, то озвучит условие
+    void fillPlayList(QString s_value);
     int getValue(int min,int max);
     void fillAll(int f_min,int f_max,int s_min,int s_max,QString state,QString nameRound);
 

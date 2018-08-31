@@ -160,21 +160,39 @@ void Widget::nextRound()
     }else if("roundBigSum"==nameRound){
         roundBigSum();
     }
-    if(isPlay){
-        soundValues();
-    }
+    soundValues();
 }
 
 void Widget::soundValues()
 {
     if(isPlay){
         playlist->clear();
-        playlist->addMedia(QUrl::fromLocalFile(QDir::toNativeSeparators("./Nombers/"+firstLabel->text()+".mp3")));
+        fillPlayList(firstLabel->text());
         playlist->addMedia(QUrl::fromLocalFile(QDir::toNativeSeparators("./Nombers/"+defineLabel->text()+".mp3")));
-        playlist->addMedia(QUrl::fromLocalFile(QDir::toNativeSeparators("./Nombers/"+secondLabel->text()+".mp3")));
+        fillPlayList(secondLabel->text());
         playlist->setCurrentIndex(0);
         player->setPlaylist(playlist);
         player->play();
+    }
+}
+
+void Widget::fillPlayList(QString s_value)
+{
+    int value=s_value.toInt();
+    if( ((value<20)||(value%10==0)) && (value<=100) ){
+        playlist->addMedia(QUrl::fromLocalFile(QDir::toNativeSeparators("./Nombers/"+s_value+".mp3")));
+    }else if(  ((value>20)||(value%10!=0)) && (value<100)  ){
+        QString ten=s_value.left(1)+"0";
+        QString one=s_value.right(1);
+        playlist->addMedia(QUrl::fromLocalFile(QDir::toNativeSeparators("./Nombers/"+ten+".mp3")));
+        playlist->addMedia(QUrl::fromLocalFile(QDir::toNativeSeparators("./Nombers/"+one+".mp3")));
+    }else if(value>100 && value<200){
+        QString h=s_value.left(1)+"00";
+        QString ten=s_value.mid(1,1)+"0";
+        QString one=s_value.right(1);
+        playlist->addMedia(QUrl::fromLocalFile(QDir::toNativeSeparators("./Nombers/"+h+".mp3")));
+        playlist->addMedia(QUrl::fromLocalFile(QDir::toNativeSeparators("./Nombers/"+ten+".mp3")));
+        playlist->addMedia(QUrl::fromLocalFile(QDir::toNativeSeparators("./Nombers/"+one+".mp3")));
     }
 }
 
@@ -266,7 +284,7 @@ void Widget::roundTableMultiplication(){//2:9 * 2:9
     fillAll(2,9,2,9,"x","roundTableMultiplication");
 }
 void Widget::roundBigMultiplication(){//11:19 * 2*10
-    fillAll(11,19,2,10,"*","roundBigMultiplication");
+    fillAll(11,19,2,10,"x","roundBigMultiplication");
 }
 void Widget::roundModulo(){//10:99 % 2:9
     fillAll(10,99,2,9,"%","roundModulo");
